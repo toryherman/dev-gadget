@@ -17,31 +17,51 @@ window.__DevGadget = {
 
   buildBox: function() {
     // move body down and insert gadget box
-    document.body.style.transform = "translateY(100px)";
-    document.body.innerHTML += "<div id='gadget-box'; style='height:100px; background-color: yellow; width:100%; position: absolute; top:0; left:0;z-index:9999;transform:translateY(-100px);'></div>";
+    document.body.style.marginTop = "100px";
+    document.body.innerHTML += "<div id='gadget-box'></div>";
 
     // define hover class
     var style = document.createElement('style');
     style.type = 'text/css';
     style.id = 'dg-style-tag'
 
+    var classesText = ".dg-hover { background-color: #a3e1ff !important; } "
+    + "#gadget-box { "
+    +   "height: 100px; "
+    +   "background-color: #000; "
+    +   "width: 100%; "
+    +   "padding: 12px 20px; "
+    +   "position: fixed; "
+    +   "top: 0; "
+    +   "left: 0; "
+    +   "z-index: 9999; "
+    + "} "
+    + ".dg-code { "
+    +   "font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace; "
+    +   "font-size: 95%; "
+    +   "color: #b7f279; "
+    +   "line-height: 140%; "
+    + "}";
+
     if (style.styleSheet) {
-      style.styleSheet.cssText = ".dg-hover { background-color: #a3e1ff !important; }";
+      style.styleSheet.cssText = classesText;
     } else {
-      style.appendChild(document.createTextNode(".dg-hover { background-color: #a3e1ff !important; }"));
+      style.appendChild(document.createTextNode(classesText));
     }
     document.getElementsByTagName("head")[0].appendChild(style);
 
     // add mouseover and mouseout listeners to all child nodes
     var nodes = document.querySelectorAll('*');
     for (var i = 0; i < nodes.length; i++) {
-      nodes[i].addEventListener("mouseover", this.dgMouseover);
-      nodes[i].addEventListener("mouseout", this.dgMouseout);
+      if (nodes[i].id !== "gadget-box") {
+        nodes[i].addEventListener("mouseover", this.dgMouseover);
+        nodes[i].addEventListener("mouseout", this.dgMouseout);
+      }
     };
   },
 
   removeBox: function() {
-    document.body.style -= "translateY(100px)";
+    document.body.style -= "margin-top = 100px;";
     var gadgetBox = document.getElementById("gadget-box");
     gadgetBox.parentNode.removeChild(gadgetBox);
 
@@ -57,11 +77,26 @@ window.__DevGadget = {
   dgMouseover: function(e) {
     e.stopPropagation();
     this.classList.add('dg-hover');
+
+    // show hovered item in gadget box
+    var box = document.getElementById('gadget-box'),
+        css = window.getComputedStyle(this),
+        fontFamily = css.getPropertyValue('font-family'),
+        fontSize = css.getPropertyValue('font-size'),
+        color = css.getPropertyValue('color');
+
+    box.innerHTML = "<code class='dg-code'>"
+    + "font-family: " + fontFamily + ";<br>"
+    + "font-size: " + fontSize + ";<br>"
+    + "color: " + color + ";"
+    + "</code>";
   },
 
   dgMouseout: function(e) {
     e.stopPropagation();
     this.classList.remove('dg-hover');
+    var box = document.getElementById('gadget-box');
+    box.innerHTML = "";
   }
 };
 
