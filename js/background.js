@@ -44,9 +44,6 @@ var Gadget = {
 			function(success) {
 				console.log('enable message for tab #' + tabId + ' was sent');
 
-				// log event
-				// Gadget.Analytics.trackEvent('Action', 'Enable');
-
 				// update browser action icon to active state
 				chrome.browserAction.setIcon({
 					"path": "images/active/icon16.png",
@@ -78,14 +75,12 @@ var Gadget = {
         file:	"js/content.js"
       }
     );
-
   }
 };
 
 chrome.browserAction.onClicked.addListener(Gadget.browserAction);
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-
 	// get tab id
 	var tabId = sender.tab && sender.tab.id;
 

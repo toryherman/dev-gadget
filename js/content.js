@@ -17,8 +17,10 @@ window.__DevGadget = {
 
   buildBox: function() {
     // move body down and insert gadget box
-    document.body.style.marginTop = "100px";
-    document.body.innerHTML += "<div id='gadget-box'></div>";
+    var gadgetBox = document.createElement('div');
+    gadgetBox.id = 'gadget-box';
+    document.body.style.setProperty("transform", "translateY(120px)", "important");
+    document.documentElement.appendChild(gadgetBox);
 
     // define hover class
     var style = document.createElement('style');
@@ -26,21 +28,27 @@ window.__DevGadget = {
     style.id = 'dg-style-tag'
 
     var classesText = ".dg-hover { background-color: #a3e1ff !important; } "
-    + "#gadget-box { "
-    +   "height: 100px; "
-    +   "background-color: #000; "
-    +   "width: 100%; "
-    +   "padding: 12px 20px; "
-    +   "position: fixed; "
-    +   "top: 0; "
-    +   "left: 0; "
-    +   "z-index: 9999; "
+    + "div#gadget-box { "
+    +   "box-sizing: border-box !important; "
+    +   "height: 120px !important; "
+    +   "background-color: #000 !important; "
+    +   "width: 100% !important; "
+    +   "padding: 12px 20px !important; "
+    +   "position: fixed !important; "
+    +   "top: 0 !important; "
+    +   "left: 0 !important; "
+    +   "z-index: 9999999 !important; "
+    +   "line-height: 20px !important; "
     + "} "
-    + ".dg-code { "
-    +   "font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace; "
-    +   "font-size: 95%; "
-    +   "color: #b7f279; "
-    +   "line-height: 140%; "
+    + "code.dg-code { "
+    +   "font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace !important; "
+    +   "font-size: 12px !important; "
+    +   "white-space: pre-line; "
+    +   "color: #b7f279 !important; "
+    +   "background-color: transparent !important; "
+    + "}"
+    + "span.dg-tag { "
+    +   "color: #e468f9 !important;"
     + "}";
 
     if (style.styleSheet) {
@@ -83,9 +91,11 @@ window.__DevGadget = {
         css = window.getComputedStyle(this),
         fontFamily = css.getPropertyValue('font-family'),
         fontSize = css.getPropertyValue('font-size'),
-        color = css.getPropertyValue('color');
+        color = css.getPropertyValue('color'),
+        tag = this.tagName.toLowerCase();
 
     box.innerHTML = "<code class='dg-code'>"
+    + "<span class='dg-tag'>&lt;" + tag + "&gt;</span><br>"
     + "font-family: " + fontFamily + ";<br>"
     + "font-size: " + fontSize + ";<br>"
     + "color: " + color + ";"
