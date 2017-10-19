@@ -19,7 +19,7 @@ window.__DevGadget = {
     // move body down and insert gadget box
     var gadgetBox = document.createElement('div');
     gadgetBox.id = 'gadget-box';
-    document.body.style.setProperty("transform", "translateY(120px)", "important");
+    document.body.style.setProperty("transform", "translateY(130px)", "important");
     document.documentElement.appendChild(gadgetBox);
 
     // define hover class
@@ -27,10 +27,13 @@ window.__DevGadget = {
     style.type = 'text/css';
     style.id = 'dg-style-tag'
 
-    var classesText = ".dg-hover { background-color: #a3e1ff !important; } "
+    var classesText = ".dg-hover { "
+    +   "background-color: #a3e1ff !important; "
+    +   "cursor: crosshair !important; "
+    + "} "
     + "div#gadget-box { "
     +   "box-sizing: border-box !important; "
-    +   "height: 120px !important; "
+    +   "height: 130px !important; "
     +   "background-color: #000 !important; "
     +   "width: 100% !important; "
     +   "padding: 12px 20px !important; "
@@ -39,16 +42,28 @@ window.__DevGadget = {
     +   "left: 0 !important; "
     +   "z-index: 9999999 !important; "
     +   "line-height: 20px !important; "
+    +   "cursor: default !important; "
     + "} "
-    + "code.dg-code { "
+    + "code#dg-code { "
     +   "font-family: Monaco, Consolas, 'Andale Mono', 'DejaVu Sans Mono', monospace !important; "
     +   "font-size: 12px !important; "
     +   "white-space: pre-line; "
     +   "color: #b7f279 !important; "
     +   "background-color: transparent !important; "
-    + "}"
+    + "} "
     + "span.dg-tag { "
-    +   "color: #e468f9 !important;"
+    +   "color: #e468f9 !important; "
+    + "} "
+    + "span.dg-prop{ "
+    +   "padding-left: 15px !important; "
+    + "} "
+    + "code#dg-copied { "
+    +   "position: absolute !important; "
+    +   "top: 12px !important; "
+    +   "right: 25px !important; "
+    +   "font-size: 12px !important; "
+    +   "color: #ff6254 !important; "
+    +   "background-color: transparent !important; "
     + "}";
 
     if (style.styleSheet) {
@@ -64,6 +79,7 @@ window.__DevGadget = {
       if (nodes[i].id !== "gadget-box") {
         nodes[i].addEventListener("mouseover", this.dgMouseover);
         nodes[i].addEventListener("mouseout", this.dgMouseout);
+        nodes[i].addEventListener("click", this.dgClick);
       }
     };
   },
@@ -77,6 +93,7 @@ window.__DevGadget = {
     for (var i = 0; i < nodes.length; i++) {
       nodes[i].removeEventListener("mouseover", this.dgMouseover);
       nodes[i].removeEventListener("mouseout", this.dgMouseout);
+      nodes[i].removeEventListener("click", this.dgClick);
     };
 
     document.getElementById('dg-style-tag').remove();
@@ -94,11 +111,12 @@ window.__DevGadget = {
         color = css.getPropertyValue('color'),
         tag = this.tagName.toLowerCase();
 
-    box.innerHTML = "<code class='dg-code'>"
-    + "<span class='dg-tag'>&lt;" + tag + "&gt;</span><br>"
-    + "font-family: " + fontFamily + ";<br>"
-    + "font-size: " + fontSize + ";<br>"
-    + "color: " + color + ";"
+    box.innerHTML = "<code id='dg-code'>"
+    + "<span class='dg-tag'>" + tag + "</span> &#123; <br>"
+    + "<span class='dg-prop'>font-family: " + fontFamily + ";</span> <br>"
+    + "<span class='dg-prop'>font-size: " + fontSize + ";</span> <br>"
+    + "<span class='dg-prop'>color: " + color + ";</span> <br>"
+    + "&#125;"
     + "</code>";
   },
 
@@ -107,6 +125,26 @@ window.__DevGadget = {
     this.classList.remove('dg-hover');
     var box = document.getElementById('gadget-box');
     box.innerHTML = "";
+  },
+
+  dgClick: function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    var range = document.createRange(),
+        textField = document.createElement('textarea'),
+        codeText = document.getElementById('dg-code').innerText;
+
+    textField.innerText = codeText;
+    document.body.appendChild(textField);
+    textField.select();
+    document.execCommand('copy');
+    textField.remove();
+
+    var copied = document.createElement('code');
+    copied.id = 'dg-copied';
+    copied.innerText = 'copied to clipboard!';
+    document.getElementById('gadget-box').appendChild(copied);
   }
 };
 
