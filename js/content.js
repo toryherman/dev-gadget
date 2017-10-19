@@ -15,14 +15,13 @@ window.__DevGadget = {
     this.active = false;
   },
 
+  /**
+   * buildBox() defines css styles
+   * builds div at top of page to display styles of hovered elements
+   * adds listeners to all child nodes
+   */
   buildBox: function() {
-    // move body down and insert gadget box
-    var gadgetBox = document.createElement('div');
-    gadgetBox.id = 'gadget-box';
-    document.body.style.setProperty("transform", "translateY(130px)", "important");
-    document.documentElement.appendChild(gadgetBox);
-
-    // define hover class
+    // inject css styles
     var style = document.createElement('style');
     style.type = 'text/css';
     style.id = 'dg-style-tag'
@@ -73,7 +72,13 @@ window.__DevGadget = {
     }
     document.getElementsByTagName("head")[0].appendChild(style);
 
-    // add mouseover and mouseout listeners to all child nodes
+    // move body down and insert gadget box
+    var gadgetBox = document.createElement('div');
+    gadgetBox.id = 'gadget-box';
+    document.body.style.setProperty("transform", "translateY(130px)", "important");
+    document.documentElement.appendChild(gadgetBox);
+
+    // add mouseover, mouseout, and click listeners to all child nodes
     var nodes = document.querySelectorAll('*');
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].id !== "gadget-box") {
@@ -84,6 +89,7 @@ window.__DevGadget = {
     };
   },
 
+  // removeBox() undoes buildBox() on disable
   removeBox: function() {
     document.body.style -= "margin-top = 100px;";
     var gadgetBox = document.getElementById("gadget-box");
@@ -99,6 +105,12 @@ window.__DevGadget = {
     document.getElementById('dg-style-tag').remove();
   },
 
+  /**
+   * dgMouseover() listener function
+   * adds dg-hover class to element on mouseover
+   * appends text of relevant css styles to gadget-box div
+   * @param {Event} e
+   */
   dgMouseover: function(e) {
     e.stopPropagation();
     this.classList.add('dg-hover');
@@ -120,6 +132,11 @@ window.__DevGadget = {
     + "</code>";
   },
 
+  /**
+   * dgMouseout() listener function
+   * removes dg-hover class on mouseout
+   * @param {Event} e
+   */
   dgMouseout: function(e) {
     e.stopPropagation();
     this.classList.remove('dg-hover');
@@ -127,6 +144,12 @@ window.__DevGadget = {
     box.innerHTML = "";
   },
 
+  /**
+   * dgClick() listener function
+   * copies displayed element styles to user clipboard
+   * appends 'copied to clipboard' to gadget-box div
+   * @param {Event} e
+   */
   dgClick: function(e) {
     e.preventDefault();
     e.stopPropagation();
