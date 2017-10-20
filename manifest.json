@@ -21,8 +21,7 @@
 
   "permissions": [
     "<all_urls>",
-    "tabs",
-    "storage"
+    "tabs"
   ],
 
   "background": {
