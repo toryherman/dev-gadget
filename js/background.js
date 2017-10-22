@@ -125,3 +125,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
   console.groupEnd();
   return true;
 });
+
+chrome.commands.onCommand.addListener(function(command) {
+  console.log('Command:', command);
+});
