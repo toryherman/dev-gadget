@@ -51,6 +51,7 @@ window.__DevGadget = {
     +   "background-color: transparent !important; "
     +   "margin: 0 !important; "
     +   "line-height: 20px !important; "
+    +   "border: none !important; "
     + "} "
     + "div#dg-box > code, div#dg-box > code > span { "
     +   "-webkit-font-smoothing: subpixel-antialiased !important; "

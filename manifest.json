@@ -3,16 +3,16 @@
   "name": "Dev Gadget",
   "version": "1.0.0",
 
-  "description": "Easily pull CSS from web pages",
+  "description": "Easily pull CSS for text on web pages",
   "icons": {
-    "16": "images/icon16.png",
+    "19": "images/icon19.png",
     "48": "images/icon48.png",
     "128": "images/icon128.png"
   },
 
   "browser_action": {
     "default_icon": {
-      "16": "images/icon16.png",
+      "19": "images/icon19.png",
       "48": "images/icon48.png",
       "128": "images/icon128.png"
     },

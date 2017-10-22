@@ -46,7 +46,7 @@ var Gadget = {
 
 				// update browser action icon to active state
 				chrome.browserAction.setIcon({
-					"path": "images/active/icon16.png",
+					"path": "images/active/icon19.png",
 					"tabId": tabId
 				});
 			}
@@ -63,7 +63,7 @@ var Gadget = {
         console.log('disable message for tab #' + tabId + ' was sent');
 
         chrome.browserAction.setIcon({
-          "path": "images/icon16.png",
+          "path": "images/icon19.png",
           "tabId": tabId
         });
       }
