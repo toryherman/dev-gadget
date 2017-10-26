@@ -24,7 +24,7 @@ window.__DevGadget = {
     // inject css styles
     var style = document.createElement('style');
     style.type = 'text/css';
-    style.id = 'dg-style-tag'
+    style.id = 'dg-style-tag';
 
     var classesText = ".dg-hover { "
     +   "background-color: #a3e1ff !important; "
@@ -88,10 +88,10 @@ window.__DevGadget = {
     document.getElementsByTagName("head")[0].appendChild(style);
 
     // move body down and insert gadget box
-    var gadgetBox = document.createElement('div');
-    gadgetBox.id = 'dg-box';
+    var dgBox = document.createElement('div');
+    dgBox.id = 'dg-box';
     document.body.style.setProperty("transform", "translateY(128px)", "important");
-    document.documentElement.appendChild(gadgetBox);
+    document.documentElement.appendChild(dgBox);
 
     // add mouseover, mouseout, and click listeners to all child nodes
     var nodes = document.querySelectorAll('*');
@@ -107,8 +107,8 @@ window.__DevGadget = {
   // removeBox() undoes buildBox() on disable
   removeBox: function() {
     document.body.style -= "margin-top = 100px;";
-    var gadgetBox = document.getElementById("dg-box");
-    gadgetBox.parentNode.removeChild(gadgetBox);
+    var dgBox = document.getElementById("dg-box");
+    dgBox.parentNode.removeChild(dgBox);
 
     var nodes = document.querySelectorAll('*');
     for (var i = 0; i < nodes.length; i++) {
@@ -142,7 +142,7 @@ window.__DevGadget = {
     + "<span class='dg-tag dg-brace'>" + tag + "</span> &#123; <br>"
     + "font-family: " + fontFamily + "; <br>"
     + "font-size: " + fontSize + "; <br>"
-    + "color: " + color + "; <br>"
+    + "color: " + __DevGadget.toHex(color) + "; <br>"
     + "<span class='dg-brace'>&#125;</span>"
     + "</code>";
   },
@@ -183,6 +183,15 @@ window.__DevGadget = {
     copied.id = 'dg-copied';
     copied.innerText = 'copied to clipboard!';
     document.getElementById('dg-box').appendChild(copied);
+  },
+
+  toHex: function(color) {
+    var rgb = color.match(/\d+/g),
+        r = parseInt(rgb[0]).toString(16),
+        g = parseInt(rgb[1]).toString(16),
+        b = parseInt(rgb[2]).toString(16);
+
+    return '#' + r + g + b;
   }
 };
 
