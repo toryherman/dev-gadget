@@ -187,9 +187,9 @@ window.__DevGadget = {
 
 	toHex: function(color) {
 		var rgb = color.match(/\d+/g),
-				r = parseInt(rgb[0]).toString(16),
-				g = parseInt(rgb[1]).toString(16),
-				b = parseInt(rgb[2]).toString(16);
+				r = ('00' + parseInt(rgb[0]).toString(16)).substr(-2),
+				g = ('00' + parseInt(rgb[1]).toString(16)).substr(-2),
+				b = ('00' + parseInt(rgb[2]).toString(16)).substr(-2);
 
 		return '#' + r + g + b;
 	}
